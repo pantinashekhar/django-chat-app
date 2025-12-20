@@ -1,0 +1,38 @@
+<!doctype html>
+<html>
+<head>
+    <title>Real-time Chat</title>
+    <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
+</head>
+<body>
+    <h1>Real-time Chat</h1>
+    <ul id="messages"></ul>
+    <input id="username" placeholder="Username" />
+    <input id="message" placeholder="Type message..." />
+    <button onclick="sendMessage()">Send</button>
+
+    <script>
+        const socket = io('ws://localhost:8000/ws/chat/room1/'); // Update with your URL
+        const messages = document.getElementById('messages');
+        const usernameInput = document.getElementById('username');
+        const messageInput = document.getElementById('message');
+
+        socket.on('connect', () => console.log('Connected'));
+
+        socket.on('chat_message', (data) => {
+            const li = document.createElement('li');
+            li.innerText = `${data.username}: ${data.message}`;
+            messages.appendChild(li);
+        });
+
+        function sendMessage() {
+            const username = usernameInput.value;
+            const message = messageInput.value;
+            if (username && message) {
+                socket.send(JSON.stringify({username, message}));
+                messageInput.value = '';
+            }
+        }
+    </script>
+</body>
+</html>
