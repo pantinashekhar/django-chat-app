@@ -23,9 +23,11 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-#v^p63z=@sa&pt*rer8*%sti$3m14fjfj85kx4xir@_qdjp9!u'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ['django-chat-app-cfa545f2aeff.herokuapp.com',
+    'localhost',
+    '127.0.0.1',]
 
 
 # Application definition
