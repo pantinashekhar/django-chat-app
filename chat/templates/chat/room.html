@@ -1,0 +1,32 @@
+<!doctype html>
+<html>
+<head>
+    <title>Chat Room</title>
+    <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
+</head>
+<body>
+    <h1>Chat Room: {{ room.name }}</h1>
+    <ul id="messages">
+        {% for message in messages %}
+        <li>{{ message.user.username }}: {{ message.content }}
+            {% if message.file %}
+            <a href="{{ message.file.url }}">Download File</a>
+            {% endif %}
+        </li>
+        {% endfor %}
+    </ul>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Send</button>
+    </form>
+    <script>
+        const socket = io('wss://http://django-chat-app-cfa545f2aeff.herokuapp.com//ws/chat/{{ room.name }}/');
+        socket.on('chat_message', (data) => {
+            const li = document.createElement('li');
+            li.innerText = `${data.username}: ${data.message}`;
+            document.getElementById('messages').appendChild(li);
+        });
+    </script>
+</body>
+</html>
